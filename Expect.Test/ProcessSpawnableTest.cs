@@ -1,38 +1,37 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using System.IO;
 using Moq;
+using Xunit;
 
 namespace ExpectNet.Test
 {
-    [TestClass]
     public class ProcessSpawnableTest
     {
-        [TestMethod]
+        [Fact]
         public void CtorFilenameTest()
         {
             string filename = "testFileName";
             ProcessSpawnable proc = new ProcessSpawnable(filename);
 
-            Assert.IsNotNull(proc.Process);
-            Assert.AreEqual(filename, proc.Process.StartInfo.FileName);
-            Assert.AreEqual("", proc.Process.StartInfo.Arguments);
+            Assert.NotNull(proc.Process);
+            Assert.Equal(filename, proc.Process.StartInfo.FileName);
+            Assert.Equal("", proc.Process.StartInfo.Arguments);
         }
 
-        [TestMethod]
+        [Fact]
         public void CtorFilenameArgumentsTest()
         {
             string filename = "testFileName";
             string args = "arg1 arg2";
             ProcessSpawnable proc = new ProcessSpawnable(filename, args);
 
-            Assert.IsNotNull(proc.Process);
-            Assert.AreEqual(filename, proc.Process.StartInfo.FileName);
-            Assert.AreEqual(args, proc.Process.StartInfo.Arguments);
+            Assert.NotNull(proc.Process);
+            Assert.Equal(filename, proc.Process.StartInfo.FileName);
+            Assert.Equal(args, proc.Process.StartInfo.Arguments);
         }
 
-        [TestMethod]
+        [Fact]
         public void CtorProcessTest()
         {
             string filename = "testFileName";
@@ -42,11 +41,11 @@ namespace ExpectNet.Test
             p.StartInfo.Arguments = args;
             ProcessSpawnable proc = new ProcessSpawnable(p);
 
-            Assert.IsNotNull(proc.Process);
-            Assert.AreSame(p.StartInfo, proc.Process.StartInfo);
+            Assert.NotNull(proc.Process);
+            Assert.Equal(p.StartInfo, proc.Process.StartInfo);
         }
 
-        [TestMethod]
+        [Fact]
         public void NullFilenameTest()
         {
             var proc = new Mock<IProcess>();
@@ -64,13 +63,13 @@ namespace ExpectNet.Test
                 caughtException = e;
             }
 
-            Assert.IsNotNull(caughtException);
-            Assert.IsInstanceOfType(caughtException, typeof(ArgumentException));
-            Assert.AreEqual("_process.StartInfo.FileName", (caughtException as ArgumentException).ParamName);
+            Assert.NotNull(caughtException);
+            Assert.IsType<ArgumentException>(caughtException);
+            Assert.Equal("_process.StartInfo.FileName", (caughtException as ArgumentException).ParamName);
 
         }
 
-        [TestMethod]
+        [Fact]
         public void EmptyFilenameTest()
         {
             var proc = new Mock<IProcess>();
@@ -88,13 +87,13 @@ namespace ExpectNet.Test
                 caughtException = e;
             }
 
-            Assert.IsNotNull(caughtException);
-            Assert.IsInstanceOfType(caughtException, typeof(ArgumentException));
-            Assert.AreEqual("_process.StartInfo.FileName", (caughtException as ArgumentException).ParamName);
+            Assert.NotNull(caughtException);
+            Assert.IsType<ArgumentException>(caughtException);
+            Assert.Equal("_process.StartInfo.FileName", (caughtException as ArgumentException).ParamName);
 
         }
 
-        [TestMethod]
+        [Fact]
         public void InitProcessTest()
         {
             var proc = new Mock<IProcess>();
@@ -118,15 +117,15 @@ namespace ExpectNet.Test
                 caughtException = e;
             }
 
-            Assert.IsNull(caughtException);
-            Assert.IsTrue(ps.Process.StartInfo.RedirectStandardError);
-            Assert.IsTrue(ps.Process.StartInfo.RedirectStandardInput);
-            Assert.IsTrue(ps.Process.StartInfo.RedirectStandardOutput);
-            Assert.IsFalse(ps.Process.StartInfo.UseShellExecute);
+            Assert.Null(caughtException);
+            Assert.True(ps.Process.StartInfo.RedirectStandardError);
+            Assert.True(ps.Process.StartInfo.RedirectStandardInput);
+            Assert.True(ps.Process.StartInfo.RedirectStandardOutput);
+            Assert.False(ps.Process.StartInfo.UseShellExecute);
             proc.Verify(p => p.Start());
         }
 
-        [TestMethod]
+        [Fact]
         public void WriteTest()
         {
             //Arrange
@@ -135,13 +134,13 @@ namespace ExpectNet.Test
             so.WriteByte(1);
             so.Seek(0, SeekOrigin.Begin);
             StreamReader output = new StreamReader(so);
-            Assert.IsFalse(output.EndOfStream);
+            Assert.False(output.EndOfStream);
 
             Stream se = new MemoryStream();
             se.WriteByte(2);
             se.Seek(0, SeekOrigin.Begin);
             StreamReader error = new StreamReader(se);
-            Assert.IsFalse(error.EndOfStream);
+            Assert.False(error.EndOfStream);
 
             Stream si = new MemoryStream();
             StreamWriter input = new StreamWriter(si);
@@ -164,11 +163,11 @@ namespace ExpectNet.Test
             byte[] tmp = new byte[maxSize];
             si.Seek(0, SeekOrigin.Begin);
             int n = si.Read(tmp, 0, maxSize);
-            string writtenText = System.Text.Encoding.Default.GetString(tmp, 0, n);
+            string writtenText = System.Text.Encoding.UTF8.GetString(tmp, 0, n);
 
-            Assert.IsTrue(output.EndOfStream);
-            Assert.IsTrue(error.EndOfStream);
-            Assert.AreEqual(testText, writtenText);
+            Assert.True(output.EndOfStream);
+            Assert.True(error.EndOfStream);
+            Assert.Equal(testText, writtenText);
         }
     }
 }

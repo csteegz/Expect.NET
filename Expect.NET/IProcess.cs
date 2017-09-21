@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ExpectNet
 {
-    interface IProcess
+    public interface IProcess
     {
         ProcessStartInfo StartInfo { get; }
         StreamReader StandardOutput { get; }

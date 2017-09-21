@@ -1,12 +1,11 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Moq;
 using System.Threading.Tasks;
 using System.Threading;
 
 namespace ExpectNet.Test
 {
-    [TestClass]
     public class SessionTest
     {
         private async Task<string> ReturnStringAfterDelayAsync(string s, int delayInMs)
@@ -21,7 +20,7 @@ namespace ExpectNet.Test
             return s;
         }
 
-        [TestMethod]
+        [Fact]
         public void SendTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -33,7 +32,7 @@ namespace ExpectNet.Test
             spawnable.Verify(p => p.Write(command));
         }
 
-        [TestMethod]
+        [Fact]
         public void BasicExpectTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -43,10 +42,10 @@ namespace ExpectNet.Test
 
             session.Expect("expected string", () => funcCalled = true);
 
-            Assert.IsTrue(funcCalled);
+            Assert.True(funcCalled);
         }
 
-        [TestMethod]
+        [Fact]
         public void BasicExpectWithOutputTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -57,11 +56,11 @@ namespace ExpectNet.Test
             string output = "";
             session.Expect("expected string", (s) => { funcCalled = true; output = s; });
 
-            Assert.IsTrue(funcCalled);
-            Assert.AreEqual("test expected string test", output);
+            Assert.True(funcCalled);
+            Assert.Equal("test expected string test", output);
         }
 
-        [TestMethod]
+        [Fact]
         public void SplitResultExpectTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -74,11 +73,11 @@ namespace ExpectNet.Test
 
             session.Expect("expected string", () => funcCalled = true);
 
-            Assert.IsTrue(funcCalled);
-            Assert.AreEqual(2, i);
+            Assert.True(funcCalled);
+            Assert.Equal(2, i);
         }
 
-        [TestMethod]
+        [Fact]
         public void SplitResultExpectWitOutputTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -92,12 +91,12 @@ namespace ExpectNet.Test
 
             session.Expect("expected string", (s) => { funcCalled = true; output = s; });
 
-            Assert.IsTrue(funcCalled);
-            Assert.AreEqual(2, i);
-            Assert.AreEqual("test expected string test", output);
+            Assert.True(funcCalled);
+            Assert.Equal(2, i);
+            Assert.Equal("test expected string test", output);
         }
 
-        [TestMethod]
+        [Fact]
         public void SendResetOutputTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -111,10 +110,10 @@ namespace ExpectNet.Test
 
             session.Expect("expected string", (s) => { session.Send("test"); });
             session.Expect("next expected", (s) => { output = s; });
-            Assert.AreEqual("next expected string", output);
+            Assert.Equal("next expected string", output);
         }
 
-        [TestMethod]
+        [Fact]
         public void TimeoutThrownExpectTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -133,12 +132,12 @@ namespace ExpectNet.Test
                 exc = e;
             }
 
-            Assert.IsNotNull(exc);
-            Assert.IsInstanceOfType(exc, typeof(TimeoutException));
-            Assert.IsFalse(funcCalled);
+            Assert.NotNull(exc);
+            Assert.IsType<TimeoutException>(exc);
+            Assert.False(funcCalled);
         }
 
-        [TestMethod]
+        [Fact]
         public void TimeoutNotThrownExpectTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -157,11 +156,11 @@ namespace ExpectNet.Test
                 exc = e;
             }
 
-            Assert.IsNull(exc);
-            Assert.IsTrue(funcCalled);
+            Assert.Null(exc);
+            Assert.True(funcCalled);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TimeoutThrownExpectAsyncTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -180,12 +179,12 @@ namespace ExpectNet.Test
                 exc = e;
             }
 
-            Assert.IsNotNull(exc);
-            Assert.IsInstanceOfType(exc, typeof(TimeoutException));
-            Assert.IsFalse(funcCalled);
+            Assert.NotNull(exc);
+            Assert.IsType<TimeoutException>(exc);
+            Assert.False(funcCalled);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TimeoutNotThrownExpectAsyncTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -204,29 +203,29 @@ namespace ExpectNet.Test
                 exc = e;
             }
 
-            Assert.IsNull(exc);
-            Assert.IsTrue(funcCalled);
+            Assert.Null(exc);
+            Assert.True(funcCalled);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetGetTimeout2400Test()
         {
             var spawnable = new Mock<ISpawnable>();
             Session session = new Session(spawnable.Object);
             session.Timeout = 2400;
-            Assert.AreEqual(2400, session.Timeout);
+            Assert.Equal(2400, session.Timeout);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetGetTimeout200Test()
         {
             var spawnable = new Mock<ISpawnable>();
             Session session = new Session(spawnable.Object);
             session.Timeout  = 200;
-            Assert.AreEqual(200, session.Timeout);
+            Assert.Equal(200, session.Timeout);
         }
 
-        [TestMethod]
+        [Fact]
         public void SetGetTimeoutIncorrectValueTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -246,11 +245,11 @@ namespace ExpectNet.Test
                 exc = e;
             }
 
-            Assert.IsNull(exc);
-            Assert.IsNotNull(aoorexc);
+            Assert.Null(exc);
+            Assert.NotNull(aoorexc);
         }
 
-        [TestMethod]
+        [Fact]
         public void BasicAsyncExpectTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -261,10 +260,10 @@ namespace ExpectNet.Test
             Task task = session.ExpectAsync("expected string", () => funcCalled = true);
             task.Wait();
 
-            Assert.IsTrue(funcCalled);
+            Assert.True(funcCalled);
         }
 
-        [TestMethod]
+        [Fact]
         public void BasicExpectAsyncWithOutputTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -275,11 +274,11 @@ namespace ExpectNet.Test
             string output = "";
             session.ExpectAsync("expected string", (s) => { funcCalled = true; output = s; }).Wait();
 
-            Assert.IsTrue(funcCalled);
-            Assert.AreEqual("test expected string test", output);
+            Assert.True(funcCalled);
+            Assert.Equal("test expected string test", output);
         }
 
-        [TestMethod]
+        [Fact]
         public void SplitResultExpectAsyncTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -292,11 +291,11 @@ namespace ExpectNet.Test
 
             session.ExpectAsync("expected string", () => funcCalled = true).Wait();
 
-            Assert.IsTrue(funcCalled);
-            Assert.AreEqual(2, i);
+            Assert.True(funcCalled);
+            Assert.Equal(2, i);
         }
 
-        [TestMethod]
+        [Fact]
         public void SplitResultExpectAsyncWitOutputTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -310,12 +309,12 @@ namespace ExpectNet.Test
 
             session.ExpectAsync("expected string", (s) => { funcCalled = true; output = s; }).Wait();
 
-            Assert.IsTrue(funcCalled);
-            Assert.AreEqual(2, i);
-            Assert.AreEqual("test expected string test", output);
+            Assert.True(funcCalled);
+            Assert.Equal(2, i);
+            Assert.Equal("test expected string test", output);
         }
 
-        [TestMethod]
+        [Fact]
         public void SendResetOutputAsyncTest()
         {
             var spawnable = new Mock<ISpawnable>();
@@ -329,7 +328,7 @@ namespace ExpectNet.Test
 
             session.ExpectAsync("expected string", (s) => { session.Send("test"); }).Wait();
             session.ExpectAsync("next expected", (s) => { output = s; }).Wait();
-            Assert.AreEqual("next expected string", output);
+            Assert.Equal("next expected string", output);
         }
     }
     

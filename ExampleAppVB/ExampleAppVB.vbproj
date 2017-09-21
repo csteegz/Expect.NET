@@ -11,7 +11,8 @@
     <AssemblyName>ExampleAppVB</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Console</MyType>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -104,9 +105,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Expect.NET\Expect.csproj">
-      <Project>{8aa52b5e-db66-4b0b-aaba-9e6900bc3d5a}</Project>
-      <Name>Expect</Name>
+    <ProjectReference Include="..\Expect.NET\Expect.Net.csproj">
+      <Project>{d8c8e470-3d6d-4446-ac72-16f092a35390}</Project>
+      <Name>Expect.Net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
