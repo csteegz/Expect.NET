@@ -47,7 +47,7 @@ namespace Ping.Tests
         }
 
         [TestMethod()]
-        public void ping8888()
+        public void pingGoogle()
         {
             //given
             Session cmd = Expect.Spawn(new ProcessSpawnable("cmd.exe"));
@@ -55,12 +55,12 @@ namespace Ping.Tests
             cmd.Expect(">", s => Console.WriteLine("got: " + s));
 
             //when
-            cmd.Send("ping 8.8.8.8\n");
+            cmd.Send("ping google.com\n");
 
             //then
             cmd.Expect(">", (output) =>
             {
-                StringAssert.Contains(output, "Ping statistics for 8.8.8.8");
+                StringAssert.Contains(output, "Pinging google.com");
             });
         }
 

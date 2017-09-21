@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <Version>3.0.0.$(VersionSuffix)</Version>
+    <PackageId>Expect.NET</PackageId>
+    <Authors>Wojtek Iwanek, Colin Versteeg</Authors>
+    <Company>Wojtek Iwanek</Company>
+    <Product>Expect for .NET</Product>
+    <Description>Port of expect scripting language functionality to .NET. 
+Expect.NET allows to control of interactive shell applications from .NET code in an easy way.</Description>
+    <Copyright>Wojtek Iwanek 2014 and Microsoft 2017</Copyright>
+    <PackageLicenseUrl>https://raw.github.com/wiwanek/Expect.NET/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageTags>Expect, dotnetcore, netstandard, dotnet core</PackageTags>
+    <AssemblyVersion>3.0.0.$(VersionSuffix)</AssemblyVersion>
+    <PackageReleaseNotes>Move to netstandard1.6 to allow use from dotnet core.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>
